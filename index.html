@@ -486,14 +486,25 @@
     }
 
     /* ─── Responsive ─── */
-    @media (max-width: 480px) {
-      .topbar { padding: 10px 12px; }
-      .main { padding: 12px 10px; }
-      .card { padding: 16px 14px; }
-      .meta-row { grid-template-columns: 1fr; }
-      .totals-grid { grid-template-columns: 1fr; }
-      .btn-icon span { display: none; }
-    }
+   @media (max-width: 480px) {
+
+  .topbar {
+    padding: 10px 12px;
+  }
+
+  .main {
+    padding: 12px 10px;
+  }
+
+  .card {
+    padding: 16px 14px;
+  }
+
+  .btn-icon span {
+    display: none;
+  }
+
+}
   </style>
 </head>
 <body>
@@ -828,7 +839,26 @@
   ────────────────────────────────────────── */
 function downloadPDF() {
 
-  const element = document.getElementById('invoiceArea');
+  showToast('Generating PDF...');
+
+  const original = document.getElementById('invoiceArea');
+
+  // Create clone
+  const clone = original.cloneNode(true);
+
+  clone.style.width = "720px";
+  clone.style.maxWidth = "720px";
+  clone.style.minWidth = "720px";
+  clone.style.margin = "0 auto";
+  clone.style.background = "#fff";
+
+  const wrapper = document.createElement("div");
+  wrapper.style.position = "fixed";
+  wrapper.style.left = "-99999px";
+  wrapper.style.top = "0";
+  wrapper.appendChild(clone);
+
+  document.body.appendChild(wrapper);
 
   const opt = {
     margin: 5,
@@ -838,26 +868,23 @@ function downloadPDF() {
       quality: 1
     },
     html2canvas: {
-      scale: 2,
-      useCORS: true,
-      scrollY: 0
+      scale: 3,
+      useCORS: true
     },
     jsPDF: {
       unit: 'mm',
       format: 'a4',
       orientation: 'portrait'
-    },
-    pagebreak: {
-      mode: ['avoid-all', 'css', 'legacy']
     }
   };
 
-  showToast('Generating PDF...');
-
   html2pdf()
+    .from(clone)
     .set(opt)
-    .from(element)
-    .save();
+    .save()
+    .then(() => {
+      document.body.removeChild(wrapper);
+    });
 }
   /* ──────────────────────────────────────────
      Toast notification
