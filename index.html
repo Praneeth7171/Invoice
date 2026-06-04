@@ -120,15 +120,15 @@
     .biz-header {
       background: linear-gradient(135deg, var(--stone) 0%, var(--granite) 100%);
       border-radius: var(--radius-lg);
-      padding: 24px 20px 20px;
+      padding: 20px 16px 18px;
       margin-bottom: 14px;
       color: var(--white);
       position: relative;
       overflow: hidden;
       display: flex;
       justify-content: space-between;
-      align-items: flex-start;
-      gap: 12px;
+      align-items: center;
+      gap: 10px;
     }
     .biz-header::before {
       content: '';
@@ -138,20 +138,33 @@
     }
     .biz-name {
       font-family: 'Playfair Display', serif;
-      font-size: clamp(1.4rem, 5vw, 2rem);
       font-weight: 900;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .biz-name .main-name {
+      display: block;
+      font-size: clamp(2.4rem, 11vw, 3.2rem);
       color: var(--gold-lt);
-      line-height: 1.1;
-      margin-bottom: 6px;
-      letter-spacing: -.01em;
+      letter-spacing: -.02em;
+      line-height: 1;
     }
-    .biz-name .amp { color: var(--gold); }
+    .biz-name .sub-name {
+      display: block;
+      font-size: clamp(.75rem, 3.2vw, 1rem);
+      font-weight: 600;
+      color: rgba(255,255,255,.7);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      margin-top: 3px;
+    }
+    .biz-name .sub-name .amp { color: var(--gold); }
     .biz-address {
-      font-size: .78rem;
-      color: rgba(255,255,255,.65);
-      line-height: 1.6;
+      font-size: .72rem;
+      color: rgba(255,255,255,.5);
+      line-height: 1.55;
+      margin-top: 8px;
     }
-    /* biz-tagline removed */
 
     /* ─── Invoice Meta Row ─── */
     .meta-row {
@@ -359,13 +372,14 @@
     @media print {
       @page {
         size: A4 portrait;
-        margin: 12mm 14mm 14mm 14mm;
+        margin: 8mm 10mm 8mm 10mm;
       }
       * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
 
-      body { background: #fff !important; font-size: 11pt; margin: 0; padding: 0; }
+      body { background: #fff !important; font-size: 9pt; margin: 0; padding: 0; }
 
-      .topbar, .btn-add, .btn-del, .btn-icon, .no-print { display: none !important; }
+      .topbar, .btn-add, .btn-del, .btn-icon, .no-print,
+      .totals-grid { display: none !important; }
 
       .main {
         padding: 0 !important;
@@ -373,94 +387,102 @@
         max-width: 100% !important;
       }
 
-      /* Remove card shadows / radius for clean print */
+      /* Cards – compact print */
       .card {
         box-shadow: none !important;
         border: 1px solid #ccc !important;
-        border-radius: 4px !important;
-        padding: 10px 12px !important;
-        margin-bottom: 8px !important;
+        border-radius: 3px !important;
+        padding: 6px 9px !important;
+        margin-bottom: 5px !important;
         page-break-inside: avoid;
       }
+      .card-title {
+        font-size: 8pt !important;
+        margin-bottom: 6px !important;
+      }
+      .card-title .dot { width: 6px !important; height: 6px !important; }
 
-      /* Business header – keep dark bg */
+      /* Business header */
       .biz-header {
-        border-radius: 4px !important;
-        padding: 12px 14px !important;
-        margin-bottom: 8px !important;
+        border-radius: 3px !important;
+        padding: 8px 10px !important;
+        margin-bottom: 5px !important;
         display: flex !important;
         justify-content: space-between !important;
-        align-items: flex-start !important;
+        align-items: center !important;
         -webkit-print-color-adjust: exact !important;
       }
-      .biz-name { font-size: 16pt !important; }
-      .biz-address { font-size: 8.5pt !important; }
+      .biz-name .main-name { font-size: 20pt !important; }
+      .biz-name .sub-name  { font-size: 7.5pt !important; letter-spacing: .05em !important; margin-top: 1px !important; }
+      .biz-address { font-size: 7pt !important; margin-top: 4px !important; line-height: 1.4 !important; }
 
-      /* Date top-right inside header */
-      .biz-date-print {
-        text-align: right;
-        color: rgba(255,255,255,.85) !important;
-        font-size: 9pt !important;
-      }
-
-      /* Hide screen-only date card */
-      .date-card { display: none !important; }
-
-      /* Date input inside header – print as plain text color */
+      /* Date input inside header */
       .biz-header input[type="date"] {
         background: rgba(255,255,255,.15) !important;
         border: 1px solid rgba(255,255,255,.3) !important;
         color: #fff !important;
-        font-size: 9pt !important;
-        padding: 4px 6px !important;
+        font-size: 8pt !important;
+        padding: 3px 5px !important;
       }
 
-      /* Inputs show as plain text */
+      /* Customer fields */
       .field-input {
         border: none !important;
         background: transparent !important;
-        padding: 2px 0 !important;
-        font-size: 10.5pt !important;
+        padding: 1px 0 !important;
+        font-size: 9pt !important;
       }
-      .tbl-input {
-        border: none !important;
-        background: transparent !important;
-        padding: 4px 2px !important;
-        font-size: 9.5pt !important;
-      }
+      .field-label { font-size: 7pt !important; }
+      .meta-row { gap: 6px !important; }
 
       /* Table */
       .items-wrap { overflow: visible !important; }
       .items-table {
         min-width: unset !important;
         width: 100% !important;
-        font-size: 9.5pt !important;
+        font-size: 8.5pt !important;
         border: 1px solid #bbb !important;
       }
       .items-table th {
-        font-size: 8pt !important;
-        padding: 6px 5px !important;
+        font-size: 7pt !important;
+        padding: 4px 4px !important;
         -webkit-print-color-adjust: exact !important;
       }
-      .items-table td { padding: 5px 5px !important; }
+      .items-table td { padding: 4px 4px !important; }
+      .tbl-input {
+        border: none !important;
+        background: transparent !important;
+        padding: 2px 2px !important;
+        font-size: 8.5pt !important;
+      }
       .items-table tr:nth-child(even) td {
         background: #f5f0ea !important;
         -webkit-print-color-adjust: exact !important;
       }
 
-      /* Summary card layout */
-      .totals-row { padding: 5px 0 !important; font-size: 10pt !important; }
-      .totals-grid { gap: 8px !important; }
+      /* Summary rows */
+      .totals-row {
+        padding: 3px 0 !important;
+        font-size: 8.5pt !important;
+        border-bottom: 1px solid #e0d8d0 !important;
+      }
 
       /* Grand total box */
       .grand-total-box {
-        border-radius: 4px !important;
-        padding: 10px 14px !important;
+        border-radius: 3px !important;
+        padding: 7px 10px !important;
+        margin-top: 6px !important;
         -webkit-print-color-adjust: exact !important;
       }
-      .grand-total-box .amt { font-size: 16pt !important; }
+      .grand-total-box .lbl { font-size: 8pt !important; }
+      .grand-total-box .amt { font-size: 13pt !important; }
 
-      .footer-note { font-size: 8pt !important; padding-bottom: 0 !important; margin-top: 8px !important; }
+      /* Footer */
+      .footer-note {
+        font-size: 7pt !important;
+        padding-bottom: 0 !important;
+        margin-top: 5px !important;
+      }
     }
 
     /* ─── Responsive ─── */
@@ -488,7 +510,7 @@
       <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M1 4v6h6M23 20v-6h-6"/><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4-4.64 4.36A9 9 0 0 1 3.51 15"/></svg>
       <span>New</span>
     </button>
-    <button class="btn-icon" onclick="printInvoice()" title="Print">
+    <button class="btn-icon" onclick="window.print()" title="Print">
       <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
       <span>Print</span>
     </button>
@@ -505,17 +527,18 @@
   <!-- Business Header -->
   <div class="biz-header">
     <div>
-      <div class="biz-name">Ganesh Granites <span class="amp">&</span> Marbles</div>
+      <div class="biz-name">
+        <span class="main-name">Ganesh</span>
+        <span class="sub-name">Granites <span class="amp">&amp;</span> Marbles</span>
+      </div>
       <div class="biz-address">
-        Sy.No. 127/3-1, Opp. Raghuram Restaurant,<br>
-        Dachepalli Highway, Piduguralla,<br>
-        Palnadu District, Andhra Pradesh – 522413
+        Piduguralla, Palnadu Dist., AP – 522413
       </div>
     </div>
-    <div style="text-align:right; flex-shrink:0; margin-left:12px;">
-      <div style="font-size:.65rem; color:rgba(255,255,255,.5); text-transform:uppercase; letter-spacing:.08em; margin-bottom:4px; font-weight:600;">Date</div>
+    <div style="text-align:right; flex-shrink:0;">
+      <div style="font-size:.6rem; color:rgba(255,255,255,.45); text-transform:uppercase; letter-spacing:.08em; margin-bottom:4px; font-weight:600;">Date</div>
       <input class="field-input" type="date" id="invoiceDate"
-        style="background:rgba(255,255,255,.1); border:1.5px solid rgba(255,255,255,.25); color:#fff; font-size:.9rem; padding:8px 10px; border-radius:6px; width:auto; min-width:130px; text-align:center;" />
+        style="background:rgba(255,255,255,.1); border:1.5px solid rgba(255,255,255,.2); color:#fff; font-size:.82rem; padding:7px 8px; border-radius:6px; width:auto; min-width:118px; max-width:138px; text-align:center;" />
     </div>
   </div>
 
@@ -546,6 +569,7 @@
             <th>L (in)</th>
             <th>H (in)</th>
             <th>Sq.Ft</th>
+            <th>Qty</th>
             <th>Rate (₹)</th>
             <th>Amount (₹)</th>
             <th class="no-print"></th>
@@ -581,6 +605,13 @@
     <!-- Extra Charges -->
     <div class="totals-grid" style="margin:10px 0;">
       <div class="field-group">
+        <label class="field-label" for="gst">GST (%)</label>
+        <input class="field-input" type="number" id="gst" min="0" max="100" step="0.01" placeholder="e.g. 18" oninput="recalcTotals()" />
+      </div>
+      <div class="field-group">
+        <!-- spacer -->
+      </div>
+      <div class="field-group">
         <label class="field-label" for="transport">Transport Charges (₹)</label>
         <input class="field-input" type="number" id="transport" min="0" placeholder="0" oninput="recalcTotals()" />
       </div>
@@ -590,6 +621,10 @@
       </div>
     </div>
 
+    <div class="totals-row">
+      <span class="label">GST (<span id="gstPctLabel">0</span>%)</span>
+      <span class="val" id="gstDisplay">₹ 0.00</span>
+    </div>
     <div class="totals-row">
       <span class="label">Transport Charges</span>
       <span class="val" id="transportDisplay">₹ 0.00</span>
@@ -608,7 +643,7 @@
 
   <div class="footer-note">
     <strong>Ganesh Granites &amp; Marbles</strong> · Piduguralla, Palnadu Dist., AP<br>
-    Thank you for your business! 
+    Thank you for your business.
   </div>
 
 </div><!-- /main -->
@@ -656,6 +691,9 @@
           id="hgt-${id}" placeholder="0"
           oninput="calcRow(${id})" /></td>
       <td class="tbl-computed" id="sqft-${id}">0.00</td>
+      <td><input class="tbl-input" type="number" min="1" step="1" value="1"
+          id="qty-${id}" placeholder="1"
+          oninput="calcRow(${id})" /></td>
       <td><input class="tbl-input" type="number" min="0" step="0.01"
           id="rate-${id}" placeholder="0"
           oninput="calcRow(${id})" /></td>
@@ -679,13 +717,15 @@
   function calcRow(id) {
     const len  = safeNum(`len-${id}`);
     const hgt  = safeNum(`hgt-${id}`);
+    const qty  = Math.max(1, safeNum(`qty-${id}`) || 1);
     const rate = safeNum(`rate-${id}`);
 
-    const sqft  = (len * hgt) / 144;
-    const total = sqft * rate;
+    const sqftUnit  = (len * hgt) / 144;          // sqft for one piece
+    const sqftTotal = sqftUnit * qty;              // sqft × quantity
+    const total     = sqftTotal * rate;
 
-    document.getElementById(`sqft-${id}`).textContent = sqft.toFixed(2);
-    document.getElementById(`sqft-${id}`).dataset.val = sqft;
+    document.getElementById(`sqft-${id}`).textContent = sqftTotal.toFixed(2);
+    document.getElementById(`sqft-${id}`).dataset.val = sqftTotal;
     document.getElementById(`amt-${id}`).textContent  = '₹ ' + formatNum(total);
 
     // store on element for fast aggregation
@@ -732,12 +772,16 @@
       totalSqft += parseFloat(el.dataset.val || 0);
     });
 
+    const gstPct   = safeNum('gst');
+    const gstAmt   = (sub * gstPct) / 100;
     const transport = safeNum('transport');
     const hamali    = safeNum('hamali');
-    const grand     = sub + transport + hamali;
+    const grand     = sub + gstAmt + transport + hamali;
 
     document.getElementById('totalSqft').textContent         = totalSqft.toFixed(2) + ' sq.ft';
     document.getElementById('subtotal').textContent         = '₹ ' + formatNum(sub);
+    document.getElementById('gstPctLabel').textContent      = gstPct % 1 === 0 ? gstPct : gstPct.toFixed(2);
+    document.getElementById('gstDisplay').textContent       = '₹ ' + formatNum(gstAmt);
     document.getElementById('transportDisplay').textContent = '₹ ' + formatNum(transport);
     document.getElementById('hamaliDisplay').textContent    = '₹ ' + formatNum(hamali);
     document.getElementById('grandTotal').textContent       = '₹ ' + formatNum(grand);
@@ -767,6 +811,7 @@
     document.getElementById('custPhone').value = '';
     document.getElementById('transport').value = '';
     document.getElementById('hamali').value    = '';
+    document.getElementById('gst').value       = '';
     document.getElementById('invoiceDate').value = new Date().toISOString().split('T')[0];
 
     document.getElementById('itemsBody').innerHTML = '';
@@ -781,23 +826,10 @@
      Uses the browser print dialog with
      PDF as destination – works on all devices
   ────────────────────────────────────────── */
- function downloadPDF() {
-  const element = document.getElementById('invoiceArea');
-
-  const opt = {
-    margin: 0.3,
-    filename: 'Ganesh_Invoice.pdf',
-    image: { type: 'jpeg', quality: 1 },
-    html2canvas: { scale: 2 },
-    jsPDF: {
-      unit: 'in',
-      format: 'a4',
-      orientation: 'portrait'
-    }
-  };
-
-  html2pdf().set(opt).from(element).save();
-}
+  function downloadPDF() {
+    showToast('Opening print / Save as PDF dialog…');
+    setTimeout(() => window.print(), 400);
+  }
 
   /* ──────────────────────────────────────────
      Toast notification
@@ -810,13 +842,6 @@
     clearTimeout(toastTimer);
     toastTimer = setTimeout(() => el.classList.remove('show'), 3000);
   }
-  function printInvoice() {
-  window.focus();
-  setTimeout(() => {
-    window.print();
-  }, 100);
-}
 </script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </body>
 </html>
