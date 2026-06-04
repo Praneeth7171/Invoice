@@ -781,10 +781,23 @@
      Uses the browser print dialog with
      PDF as destination – works on all devices
   ────────────────────────────────────────── */
-  function downloadPDF() {
-    showToast('Opening print / Save as PDF dialog…');
-    setTimeout(() => window.print(), 400);
-  }
+ function downloadPDF() {
+  const element = document.getElementById('invoiceArea');
+
+  const opt = {
+    margin: 0.3,
+    filename: 'Ganesh_Invoice.pdf',
+    image: { type: 'jpeg', quality: 1 },
+    html2canvas: { scale: 2 },
+    jsPDF: {
+      unit: 'in',
+      format: 'a4',
+      orientation: 'portrait'
+    }
+  };
+
+  html2pdf().set(opt).from(element).save();
+}
 
   /* ──────────────────────────────────────────
      Toast notification
@@ -798,5 +811,6 @@
     toastTimer = setTimeout(() => el.classList.remove('show'), 3000);
   }
 </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </body>
 </html>
