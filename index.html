@@ -487,12 +487,28 @@
 
     
 /* Force desktop layout for PDF generation */
+
+.pdf-mode,
+.pdf-mode body{
+  width:794px !important;
+  overflow:hidden !important;
+}
+
 .pdf-mode #invoiceArea {
-  width: 720px !important;
-  max-width: 720px !important;
-  min-width: 720px !important;
+  width: 794px !important;
+  max-width: 794px !important;
+  min-width: 794px !important;
   margin: 0 auto !important;
 }
+
+.pdf-mode .items-wrap{
+  overflow:visible !important;
+}
+
+.pdf-mode .items-table{
+  min-width:100% !important;
+}
+
 
 .pdf-mode .main {
   width: 720px !important;
