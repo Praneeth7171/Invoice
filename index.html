@@ -485,7 +485,31 @@
       }
     }
 
-    /* ─── Responsive ─── */
+    
+/* Force desktop layout for PDF generation */
+.pdf-mode #invoiceArea {
+  width: 720px !important;
+  max-width: 720px !important;
+  min-width: 720px !important;
+  margin: 0 auto !important;
+}
+
+.pdf-mode .main {
+  width: 720px !important;
+  max-width: 720px !important;
+  padding: 16px !important;
+}
+
+.pdf-mode .card {
+  padding: 20px !important;
+}
+
+.pdf-mode .topbar {
+  display: none !important;
+}
+
+
+/* ─── Responsive ─── */
    @media (max-width: 480px) {
 
   .topbar {
@@ -841,52 +865,48 @@ function downloadPDF() {
 
   showToast('Generating PDF...');
 
-  const original = document.getElementById('invoiceArea');
+  document.body.classList.add('pdf-mode');
 
-  // Create clone
-  const clone = original.cloneNode(true);
-
-  clone.style.width = "720px";
-  clone.style.maxWidth = "720px";
-  clone.style.minWidth = "720px";
-  clone.style.margin = "0 auto";
-  clone.style.background = "#fff";
-
-  const wrapper = document.createElement("div");
-  wrapper.style.position = "fixed";
-  wrapper.style.left = "-99999px";
-  wrapper.style.top = "0";
-  wrapper.appendChild(clone);
-
-  document.body.appendChild(wrapper);
+  const element = document.getElementById('invoiceArea');
 
   const opt = {
-    margin: 5,
+    margin: [5,5,5,5],
     filename: 'Ganesh_Invoice.pdf',
     image: {
       type: 'jpeg',
       quality: 1
     },
     html2canvas: {
-      scale: 3,
-      useCORS: true
+      scale: 4,
+      useCORS: true,
+      scrollX: 0,
+      scrollY: 0,
+      windowWidth: 1200
     },
     jsPDF: {
       unit: 'mm',
       format: 'a4',
       orientation: 'portrait'
+    },
+    pagebreak: {
+      mode: ['avoid-all']
     }
   };
 
   html2pdf()
-    .from(clone)
     .set(opt)
+    .from(element)
     .save()
     .then(() => {
-      document.body.removeChild(wrapper);
+      document.body.classList.remove('pdf-mode');
+    })
+    .catch(() => {
+      document.body.classList.remove('pdf-mode');
     });
+
 }
-  /* ──────────────────────────────────────────
+
+/* ──────────────────────────────────────────
      Toast notification
   ────────────────────────────────────────── */
   let toastTimer;
@@ -898,40 +918,9 @@ function downloadPDF() {
     toastTimer = setTimeout(() => el.classList.remove('show'), 3000);
   }
   function printInvoice() {
-
-  if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-
-    const printContents = document.getElementById('invoiceArea').innerHTML;
-
-    const win = window.open('', '_blank');
-
-    win.document.write(`
-      <html>
-      <head>
-        <title>Invoice</title>
-        <style>
-          body{
-            margin:10px;
-            font-family:Arial,sans-serif;
-          }
-        </style>
-      </head>
-      <body>
-        ${printContents}
-      </body>
-      </html>
-    `);
-
-    win.document.close();
-
-    setTimeout(() => {
-      win.print();
-    }, 1000);
-
-  } else {
-    window.print();
-  }
+  window.print();
 }
+
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </body>
